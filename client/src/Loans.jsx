@@ -30,8 +30,9 @@ export default function Loans({ user }) {
   const [loans, setLoans] = useState([]), [res, setRes] = useState([]), [tab, setTab] = useState('active'), [issue, setIssue] = useState(false);
   const load = useCallback(() => {
     api('/loans').then(setLoans).catch(e => toast(e.message, 1));
-    api('/reservations').then(setRes).catch(() => {});
-  }, []);
+    api('/reservations').then(setRes).catch(() => { });
+  }, [toast]);
+
   useEffect(load, [load]);
   const run = async (fn, ok) => { try { await fn(); toast(ok); load(); } catch (e) { toast(e.message, 1); } };
   const tabs = admin ? [['active', 'Active'], ['overdue', 'Overdue'], ['fines', 'Unpaid fines'], ['history', 'History'], ['res', 'Reservations']]

@@ -31,8 +31,8 @@ export default function Catalog({ user }) {
   const [open, setOpen] = useState(null), [form, setForm] = useState(null);
   const load = useCallback(() => {
     api('/books?q=' + encodeURIComponent(q)).then(setBooks).catch(e => toast(e.message, 1));
-    if (!admin) api('/reservations').then(setRes).catch(() => {});
-  }, [q]);
+    if (!admin) api('/reservations').then(setRes).catch(() => { });
+  }, [q, admin, toast]);
   useEffect(() => { const t = setTimeout(load, 200); return () => clearTimeout(t); }, [load]);
   const act = async (fn, ok) => { try { await fn(); toast(ok); load(); } catch (e) { toast(e.message, 1); } };
   const genres = ['All', ...new Set(books.map(b => b.genre))];

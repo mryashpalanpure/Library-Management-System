@@ -1,11 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { api } from './api';
 import { useToast } from './ui';
 
 export default function Students() {
   const toast = useToast(), [us, setUs] = useState([]), [q, setQ] = useState('');
-  const load = () => api('/users').then(setUs).catch(e => toast(e.message, 1));
-  useEffect(() => { load(); }, []);
+  const load = useCallback(
+    () => api('/users').then(setUs).catch(e => toast(e.message, 1)),
+    [toast]
+  );
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
   const flip = async u => { try { await api(`/users/${u._id}/block`, 'PUT'); toast(u.blocked ? 'Student unblocked' : 'Student blocked'); load(); } catch (e) { toast(e.message, 1); } };
   const shown = us.filter(u => (u.name + u.studentId + u.email).toLowerCase().includes(q.toLowerCase()));
   return (

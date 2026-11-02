@@ -28,14 +28,16 @@ pipeline{
                 }
             }
         }
-        
+
         stage('Unit testing'){
             steps{
                 dir('client'){
                     sh 'npm test'
+                    echo 'frontend unit testing done successfully'
                 }
                 dir('server'){
                     sh 'npm test'
+                    echo 'backend unit testing done successfully'
                 }
             }
         }

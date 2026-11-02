@@ -42,6 +42,19 @@ pipeline{
             }
         }
 
+        stage('Static Code Analysis'){
+            steps{
+                dir('client'){
+                    sh 'npm run lint'
+                    echo 'frontend static code analysis done'
+                }
+                dir('server'){
+                    sh 'npm run lint'
+                    echo 'backend static code analysis done'
+                }
+            }
+        }
+
         stage('Docker Build and Push to Docker Hub'){
             steps{
                 withCredentials([

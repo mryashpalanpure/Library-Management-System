@@ -55,6 +55,18 @@ pipeline{
             }
         }
 
+        stage('SonarQube Analysis') {
+         steps {
+             script {
+            def scannerHome = tool 'SonarScanner'
+
+            withSonarQubeEnv('SonarQube-Server') {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
+    }
+}
+
         stage('Docker Build and Push to Docker Hub'){
             steps{
                 withCredentials([

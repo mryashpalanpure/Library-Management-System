@@ -60,12 +60,20 @@ pipeline{
              script {
             def scannerHome = tool 'SonarScanner'
 
-            withSonarQubeEnv('SonarQube-Server') {
-                sh "${scannerHome}/bin/sonar-scanner"
+                withSonarQubeEnv('SonarQube-Server') {
+                 sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
             }
         }
-    }
-}
+
+        stage('Quality Gate') {
+          steps {
+                timeout(time: 3, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+                }
+             }
+        }
 
         stage('Docker Build and Push to Docker Hub'){
             steps{

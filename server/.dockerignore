@@ -2,3 +2,9 @@
 node_modules
 coverage
 test-results
+tests
+eslint.config.js
+vitest.config.js
+.gitignore
+docker-compose.yaml
+sonar-project-properties

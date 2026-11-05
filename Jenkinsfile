@@ -84,6 +84,7 @@ pipeline{
                       passwordVariable : 'docker_pass'
                   )
                 ])
+                
                 {
                     dir('client'){
                         sh 'docker build -t ${docker_user}/${FIMAGE_NAME}:${BUILD_NUMBER} .'

@@ -5,7 +5,10 @@ import { Cover, Modal, useToast } from './ui';
 function Issue({ onClose, onDone }) {
   const toast = useToast();
   const [users, setUsers] = useState([]), [books, setBooks] = useState([]), [f, setF] = useState({ userId: '', bookId: '' });
-  useEffect(() => { api('/users').then(setUsers); api('/books').then(setBooks); }, []);
+  useEffect(() => {
+    api('/users').then(setUsers).catch(e => toast(e.message, 1));
+    api('/books').then(setBooks).catch(e => toast(e.message, 1));
+  }, []);
   const go = async e => {
     e.preventDefault();
     try { await api('/loans', 'POST', f); toast('Book issued for 14 days'); onDone(); } catch (x) { toast(x.message, 1); }
@@ -19,7 +22,7 @@ function Issue({ onClose, onDone }) {
         <select className="wide" required value={f.bookId} onChange={e => setF({ ...f, bookId: e.target.value })}>
           <option value="">Choose a book</option>{books.filter(b => b.available > 0).map(b => <option key={b._id} value={b._id}>{b.title} · {b.available} left</option>)}
         </select>
-        <button className="btn wide">Issue book</button>
+        <button type="submit" className="btn wide">Issue book</button>
       </form>
     </Modal>
   );

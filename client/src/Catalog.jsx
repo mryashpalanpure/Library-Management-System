@@ -20,8 +20,7 @@ function BookForm({ book, onDone }) {
       <input type="number" placeholder="Year" value={f.year || ''} onChange={set('year')} />
       <input type="number" min="1" placeholder="Copies" value={f.copies} onChange={set('copies')} />
       <textarea className="wide" rows="3" placeholder="Short description" value={f.description || ''} onChange={set('description')} />
-      <button className="btn wide">{book ? 'Save changes' : 'Add book'}</button>
-    </form>
+      <button type="submit" className="btn wide">{book ? 'Save changes' : 'Add book'}</button>    </form>
   );
 }
 
@@ -61,10 +60,16 @@ export default function Catalog({ user }) {
       {!books.length && <p className="empty">No books match that search. Try a different title, author or ISBN.</p>}
       <div className="grid">
         {books.filter(x => genre === 'All' || x.genre === genre).map(x => (
-          <article key={x._id} className="book" onClick={() => setOpen(x._id)} tabIndex="0" onKeyDown={e => e.key === 'Enter' && setOpen(x._id)}>
-            <Cover b={x} />
+          <div
+            key={x._id}
+            className="book"
+            role="button"
+            tabIndex={0}
+            onClick={() => setOpen(x._id)}
+            onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && setOpen(x._id)}
+          >            <Cover b={x} />
             <span className={x.available ? 'badge ok' : 'badge no'}>{x.available ? `${x.available} of ${x.copies} available` : 'All copies out'}</span>
-          </article>
+          </div>
         ))}
       </div>
       {b && <Modal title={b.title} onClose={() => setOpen(null)}>

@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "sonarqube-connect-with-vscode",
+        "projectKey": "library-management-system"
+    }
+}

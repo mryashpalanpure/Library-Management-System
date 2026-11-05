@@ -9,8 +9,10 @@ if (!ADMIN_EMAIL || !ADMIN_PASSWORD) { console.error('Set ADMIN_EMAIL and ADMIN_
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 const LIMIT = 3, DAYS = 14, RENEW_DAYS = 7, RATE = 5, DAY = 864e5; // max books, loan days, renewal days, ₹ fine per day
 
-const app = express(); app.use(cors(), express.json());
-const w = f => (q, s) => f(q, s).catch(e => s.status(400).json({ message: e.message }));
+const app = express();
+app.disable('x-powered-by');
+app.use(cors({ origin: CLIENT_URL }));
+app.use(express.json()); const w = f => (q, s) => f(q, s).catch(e => s.status(400).json({ message: e.message }));
 const auth = role => (req, res, next) => {
   try { req.user = jwt.verify((req.headers.authorization || '').slice(7), SECRET); }
   catch { return res.status(401).json({ message: 'Please log in again' }); }
@@ -82,7 +84,7 @@ app.post('/api/auth/forgot', w(async (q, s) => {
   const u = await User.findOne({ email: (q.body.email || '').trim().toLowerCase() });
   if (u) {
     const raw = crypto.randomBytes(32).toString('hex'), link = `${CLIENT_URL}/?reset=${raw}`;
-    u.resetHash = sha(raw); u.resetExpires = new Date(Date.now() + 10 * 60 * 1000 ); await u.save();
+    u.resetHash = sha(raw); u.resetExpires = new Date(Date.now() + 10 * 60 * 1000); await u.save();
     try {
       await sendMail(u.email, 'Update your Stacks password',
         `Hi ${u.name},\n\nUse this link to choose a new password (valid for 10 minutes):\n${link}\n\nIf you did not ask for this, you can ignore this email.`,

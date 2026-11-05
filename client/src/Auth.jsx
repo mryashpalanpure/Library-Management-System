@@ -48,8 +48,7 @@ export default function Auth({ onLogin }) {
         </div>}
         {err && <p className="err" role="alert">{err}</p>}
         {info && <p className="note" role="status">{info}</p>}
-        <button className="btn" disabled={busy}>{{ login: 'Log in', register: 'Create account', forgot: 'Email me a link', reset: 'Update password' }[mode]}</button>
-        {mode === 'login' && <p className="muted">New student? <a href="#" onClick={to('register')}>Create an account</a></p>}
+        <button type="submit" className="btn" disabled={busy}>{{ login: 'Log in', register: 'Create account', forgot: 'Email me a link', reset: 'Update password' }[mode]}</button>        {mode === 'login' && <p className="muted">New student? <a href="#" onClick={to('register')}>Create an account</a></p>}
         {mode !== 'login' && <p className="muted"><a href="#" onClick={to('login')}>Back to log in</a></p>}
       </form>
     </div>

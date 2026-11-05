@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { hue } from './api';
-export const ToastCtx = createContext(() => {});
+export const ToastCtx = createContext(() => { });
 export const useToast = () => useContext(ToastCtx);
 
 export const Cover = ({ b, mini }) => (
@@ -12,7 +12,7 @@ export const Cover = ({ b, mini }) => (
 export function Modal({ title, onClose, children }) {
   useEffect(() => { const k = e => e.key === 'Escape' && onClose(); addEventListener('keydown', k); return () => removeEventListener('keydown', k); }, [onClose]);
   return (
-    <div className="scrim" onClick={onClose}>
+    <div className="scrim" role="presentation" onClick={onClose}>
       <div className="modal card" role="dialog" aria-label={title} onClick={e => e.stopPropagation()}>
         <header><h3>{title}</h3><button className="x" onClick={onClose} aria-label="Close">×</button></header>
         {children}

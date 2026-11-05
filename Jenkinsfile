@@ -94,6 +94,11 @@ pipeline{
                     }
 
                     sh '''
+                    trivy image --severity HIGH,CRITICAL --exit-code 0 $docker_user/${FIMAGE_NAME}:${BUILD_NUMBER}
+                    trivy image --severity HIGH,CRITICAL --exit-code 0 $docker_user/${BIMAGE_NAME}:${BUILD_NUMBER}
+                    '''
+
+                    sh '''
                     echo $docker_pass | docker login -u $docker_user --password-stdin
                     docker push $docker_user/${FIMAGE_NAME}:${BUILD_NUMBER}
                     docker push $docker_user/${BIMAGE_NAME}:${BUILD_NUMBER}
